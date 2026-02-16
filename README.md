@@ -20,12 +20,6 @@ An Angular web application designed to automatically balance and create two team
 - **Statistics Dashboard**: Visual representation of win/loss ratios per generated team
 - **Performance Analytics**: Track which team compositions work best
 
-### User Interface
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Dark/Light Theme**: Customizable UI themes
-- **Real-time Updates**: Live statistics and team preview
-- **Drag & Drop**: Manual team adjustments if needed
-
 ## Technologies
 
 - **Frontend Framework**: Angular 17+
