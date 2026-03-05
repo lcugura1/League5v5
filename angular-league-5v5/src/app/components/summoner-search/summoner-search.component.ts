@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PlayerService } from '../../services/player.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PlayerPoolService } from '../../services/player-pool.service';
 
 @Component({
   selector: 'app-summoner-search',
@@ -16,14 +17,9 @@ export class SummonerSearchComponent {
   isLoading: boolean = false;
   errorMessage: string = '';
 
-  constructor(private playerService: PlayerService) {}
+  constructor(private playerService: PlayerService, private playerPoolService: PlayerPoolService) {}
 
   onSearch(): void {
-
-    console.log('Button clicked!'); 
-    console.log('gameName:', this.gameName);
-    console.log('tagLine:', this.tagLine);
-
     if (!this.gameName || !this.tagLine) return;
 
     this.isLoading = true;
@@ -31,8 +27,13 @@ export class SummonerSearchComponent {
 
     this.playerService.searchPlayer(this.gameName, this.tagLine).subscribe({
       next: (player) => {
-        console.log('Player found:', player);
         this.isLoading = false;
+        this.playerPoolService.addPlayer({
+          summonerName: this.gameName,
+          summonerLevel: player.summonerLevel,
+          summonerIconId: player.profileIconId,
+          puuid: player.puuid
+        });
       },
       error: (err) => {
         this.errorMessage = 'Failed to fetch player data. Please check the name and tag.';
