@@ -1,22 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
-export interface PoolPlayer {
-  summonerName: string,
-  summonerLevel: number,
-  summonerIconId: number,
-  puuid: string
-}
+import { Player } from '../models/player';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class PlayerPoolService {
-  private players = new BehaviorSubject<(PoolPlayer | null)[]>(Array(10).fill(null));
+  private players = new BehaviorSubject<(Player | null)[]>(Array(10).fill(null));
   players$ = this.players.asObservable();
 
-  addPlayer(player: PoolPlayer): void {
+  addPlayer(player: Player): void {
     const current = this.players.getValue();
     const firstEmpty = current.findIndex(p => p === null);
     

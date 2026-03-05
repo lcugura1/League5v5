@@ -12,5 +12,5 @@ import { TeamDisplayComponent } from './components/team-display/team-display.com
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'angular-league-5v5';
+  title = 'League 5v5';
 }
