@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PlayerService } from '../../services/player.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +18,8 @@ export class SummonerSearchComponent {
   isLoading: boolean = false;
   errorMessage: string = '';
 
+  private destroyRef = inject(DestroyRef);
+
   constructor(private playerService: PlayerService, private playerPoolService: PlayerPoolService) {}
 
   onSearch(): void {
@@ -25,7 +28,9 @@ export class SummonerSearchComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.playerService.searchPlayer(this.gameName, this.tagLine).subscribe({
+    this.playerService.searchPlayer(this.gameName, this.tagLine)
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe({
       next: (player) => {
         this.isLoading = false;
         this.playerPoolService.addPlayer({
