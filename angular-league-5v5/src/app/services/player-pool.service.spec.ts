@@ -14,3 +14,5 @@ describe('PlayerPoolService', () => {
     expect(service).toBeTruthy();
   });
 });
+
+export { PlayerPoolService };
