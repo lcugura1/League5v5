@@ -22,4 +22,10 @@ export class PlayerPoolService {
     updated[firstEmpty] = player;
     this.players.next(updated);
   }
+
+  removePlayer(index: number): void {
+    const updated = [...this.players.getValue()];
+    updated[index] = null;
+    this.players.next(updated);
+  }
 }

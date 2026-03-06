@@ -15,6 +15,7 @@ import { Player } from '../../models/player';
 export class PlayerPoolComponent implements OnInit {
   players: (Player | null)[] = Array(10).fill(null);
   patchVersion: string = '14.24.1';
+  selectedIndex: number | null = null;  
 
   private destroyRef = inject(DestroyRef);
 
@@ -32,4 +33,15 @@ export class PlayerPoolComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(players => this.players = players);
   }
+
+  selectPlayer(index: number): void {
+    this.selectedIndex = this.selectedIndex === index ? null : index;
+  }
+
+  removePlayer(): void {
+    if (this.selectedIndex === null) return;
+    this.playerPoolService.removePlayer(this.selectedIndex);
+    this.selectedIndex = null;
+  }
+
 }
