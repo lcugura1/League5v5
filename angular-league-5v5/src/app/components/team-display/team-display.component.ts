@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Player } from '../../models/player';
+import { TeamService } from '../../services/team.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-team-display',
@@ -9,6 +12,23 @@ import { CommonModule } from '@angular/common';
   styleUrl: './team-display.component.scss'
 })
 
-export class TeamDisplayComponent {
+export class TeamDisplayComponent implements OnInit {
+  team1: Player[] = [];
+  team2: Player[] = [];
+  patchVersion: string = '14.24.1';
+
+  private destroyRef = inject(DestroyRef);  
+
+  constructor(private teamService: TeamService) { }
+
+  ngOnInit(): void {
+    this.teamService.team1$
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe(team => this.team1 = team);
+
+    this.teamService.team2$    
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe(team => this.team2 = team);
+  }
   slots = Array(5);
 }
