@@ -33,11 +33,15 @@ export class SummonerSearchComponent {
     .subscribe({
       next: (player) => {
         this.isLoading = false;
+        console.log('player: ', player);
         this.playerPoolService.addPlayer({
           summonerName: this.gameName,
           summonerLevel: player.summonerLevel,
           summonerIconId: player.profileIconId,
-          puuid: player.puuid
+          puuid: player.puuid,
+          rankScore: 0,
+          tier: 'UNRANKED',
+          rank: ''
         });
       },
       error: (err) => {

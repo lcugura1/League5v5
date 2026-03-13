@@ -44,4 +44,15 @@ export class PlayerPoolComponent implements OnInit {
     this.selectedIndex = null;
   }
 
+  fairPlay(): void {
+    if (!this.hasPlayers) return; 
+    const { team1, team2 } = this.playerPoolService.fairPlay();
+    console.log('Team 1:', team1);
+    console.log('Team 2:', team2);
+  }
+
+  get hasPlayers(): boolean {
+    return this.players.some(player => player !== null);
+  }
+
 }
