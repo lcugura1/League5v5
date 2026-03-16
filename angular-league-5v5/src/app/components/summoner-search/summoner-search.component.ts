@@ -4,6 +4,7 @@ import { PlayerService } from '../../services/player.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlayerPoolService } from '../../services/player-pool.service';
+import { map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-summoner-search',
@@ -29,26 +30,32 @@ export class SummonerSearchComponent {
     this.errorMessage = '';
 
     this.playerService.searchPlayer(this.gameName, this.tagLine)
-    .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe({
-      next: (player) => {
-        this.isLoading = false;
-        console.log('player: ', player);
-        this.playerPoolService.addPlayer({
-          summonerName: this.gameName,
-          summonerLevel: player.summonerLevel,
-          summonerIconId: player.profileIconId,
-          puuid: player.puuid,
-          rankScore: 0,
-          tier: 'UNRANKED',
-          rank: ''
-        });
-      },
-      error: (err) => {
-        this.errorMessage = 'Failed to fetch player data. Please check the name and tag.';
-        this.isLoading = false;
-        console.log(err);
-      }
-    });
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        switchMap(player =>
+          this.playerService.getRankData(player.puuid).pipe(
+            map(rankData => ({ player, rankData }))
+          )
+        )
+      )
+      .subscribe({
+        next: ({ player, rankData }) => {
+          this.isLoading = false;
+          this.playerPoolService.addPlayer({
+            summonerName: this.gameName,
+            summonerLevel: player.summonerLevel,
+            summonerIconId: player.profileIconId,
+            puuid: player.puuid,
+            tier: rankData?.tier || 'UNRANKED',
+            rank: rankData?.rank || '',
+            rankScore: this.playerService.getRankScore(rankData?.tier || 'UNRANKED', rankData?.rank || 'IV')
+          });
+        },
+        error: (err: any) => {
+          this.errorMessage = 'Failed to fetch player data.';
+          this.isLoading = false;
+          console.error(err);
+        }
+      });
   }
 }
