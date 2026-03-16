@@ -49,7 +49,7 @@ export class PlayerService {
     return this.http.get<any[]>(
       `${this.summonerBaseUrl}/lol/league/v4/entries/by-puuid/${puuid}`, 
       { headers: { 'X-Riot-Token': this.apiKey } }
-    ).pipe(map(leagues => leagues[0] || null));
+    ).pipe(map(leagues => leagues.find(e => e.queueType === 'RANKED_SOLO_5x5') || null));
   }
 
 }
