@@ -40,6 +40,7 @@ export class SummonerSearchComponent {
       )
       .subscribe({
         next: ({ player, rankData }) => {
+          console.log('profileIconId:', player.profileIconId);
           this.isLoading = false;
           this.playerPoolService.addPlayer({
             summonerName: this.gameName,
