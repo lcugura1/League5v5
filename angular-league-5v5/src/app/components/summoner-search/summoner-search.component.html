@@ -1,3 +1,5 @@
+<app-summoner-search-error *ngIf="error" class="error" [error]="error"></app-summoner-search-error>
+
 <div class="max-w-md mx-auto">
   <label class="block text-sm/6 font-medium text-white">Summoner name</label>
   <div class="mt-2 flex gap-2">
@@ -31,5 +33,5 @@
   </div>
 
   <!-- Error message -->
-  <p *ngIf="errorMessage" class="mt-2 text-red-400 text-sm">{{ errorMessage }}</p>
+  <!-- <p *ngIf="errorMessage" class="mt-2 text-red-400 text-sm">{{ errorMessage }}</p> -->
 </div>

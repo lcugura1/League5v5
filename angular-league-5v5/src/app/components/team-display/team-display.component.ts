@@ -15,12 +15,12 @@ import { PlayerService } from '../../services/player.service';
 export class TeamDisplayComponent implements OnInit {
   team1: Player[] = [];
   team2: Player[] = [];
-  patchVersion: string = '14.24.1';  
+  patchVersion: string = '14.24.1';
 
   private destroyRef = inject(DestroyRef);
 
   constructor(private teamService: TeamService, private playerService: PlayerService) {}  
-
+  
   ngOnInit(): void {
     this.playerService.getLatestPatch()
       .pipe(takeUntilDestroyed(this.destroyRef))

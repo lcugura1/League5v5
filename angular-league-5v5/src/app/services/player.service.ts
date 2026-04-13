@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, switchMap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Player } from '../models/player';
 
 @Injectable({
@@ -17,10 +17,14 @@ export class PlayerService {
   constructor(private http: HttpClient) {}
 
   searchPlayer(gameName: string, tagLine: string): Observable<any> {
-    return this.http.get<any>(
+    return this.http.get<Player>(
       `${this.accountBaseUrl}/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}`,
       { headers: { 'X-Riot-Token': this.apiKey } }
     ).pipe(
+      catchError(error => {
+        console.error('Error fetching player data:', error);
+        return throwError(() => error);
+      }),
       switchMap(account =>
         this.http.get<any>(
           `${this.summonerBaseUrl}/lol/summoner/v4/summoners/by-puuid/${account.puuid}`,
