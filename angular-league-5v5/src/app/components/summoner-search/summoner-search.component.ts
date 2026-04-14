@@ -6,12 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { PlayerPoolService } from '../../services/player-pool.service';
 import { map, switchMap, of, catchError, throwError } from 'rxjs';
 import { SummonerSearchErrorComponent } from './summoner-search-error/summoner-search-error.component';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-summoner-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, SummonerSearchErrorComponent, MatSnackBarModule],
+  imports: [CommonModule, FormsModule, SummonerSearchErrorComponent],
   templateUrl: './summoner-search.component.html',
   styleUrl: './summoner-search.component.scss',
 })
@@ -27,16 +26,8 @@ export class SummonerSearchComponent {
   constructor(
     private playerService: PlayerService,
     private playerPoolService: PlayerPoolService,
-    private snackBar: MatSnackBar
   ) {}
 
-  private showError(message: string) : void {
-    this.snackBar.open(message, 'Close', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: ['snackbar-error']
-  }); }
   onSearch(): void {
     if (!this.gameName || !this.tagLine) return;
 
@@ -80,7 +71,6 @@ export class SummonerSearchComponent {
         },
         error: (err) => {
           this.isLoading = false;
-          this.showError('Failed to fetch player data. Please check the summoner name and tag line.');
           console.error(err);
         },
       });

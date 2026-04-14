@@ -1,37 +1,76 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-summoner-search-error',
   standalone: true,
+  imports: [CommonModule],
   template: `
-    <h5>Error</h5>
-    <p class="message">{{ error?.message }}</p>
+    <div class="error-banner" role="alert" aria-live="assertive">
+      <div class="error-icon">!</div>
+      <div class="error-content">
+        <h5 class="error-title">Search failed</h5>
+        <p class="error-message">{{ errorMessage }}</p>
+      </div>
+    </div>
   `,
-  styles: [
-    `
-      :host {
-        padding: 5px 15px;
-        box-sizing: border-box;
-        display: block;
-        color: red;
-        background-color: #ffe2e2;
-      }
-      p,
-      h5 {
-        margin: 0;
-      }
-      p {
-        font-size: 10px;
-      }
-      h5 {
-        margin-bottom: 3px;
-        font-size: 12px;
-      }
-    `,
-  ],
-})
+  styles: [`
+    :host {
+      display: block;
+      margin-top: 0.75rem;
+    }
 
+    .error-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(239, 68, 68, 0.28);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(127, 29, 29, 0.18), rgba(127, 29, 29, 0.10));
+      color: #fecaca;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(8px);
+    }
+
+    .error-icon {
+      flex: 0 0 1.75rem;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+      background: rgba(239, 68, 68, 0.9);
+      box-shadow: 0 6px 18px rgba(239, 68, 68, 0.22);
+    }
+
+    .error-content {
+      min-width: 0;
+    }
+
+    .error-title {
+      margin: 0 0 0.2rem 0;
+      font-size: 0.9rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: #fff5f5;
+    }
+
+    .error-message {
+      margin: 0;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: #fecaca;
+    }
+  `]
+})
 export class SummonerSearchErrorComponent {
-  @Input()
-  error: Error | null = null;
+  @Input() error: Error | null = null;
+
+  get errorMessage(): string {
+    return 'Failed to fetch player data.';
+  }
 }
