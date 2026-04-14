@@ -5,6 +5,6 @@ export function searchPlayerInterceptor(
   req: HttpRequest<unknown>,
   next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> {
-  console.log(req.url);
+  console.log("AAAAAA", req.url);
   return next(req);
 }
