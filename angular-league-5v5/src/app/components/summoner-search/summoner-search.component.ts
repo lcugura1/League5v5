@@ -1,20 +1,22 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, ViewChild, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PlayerService } from '../../services/player.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PlayerPoolService } from '../../services/player-pool.service';
-import { map, switchMap, of, catchError, throwError } from 'rxjs';
+import { map, switchMap, of, catchError, throwError, finalize } from 'rxjs';
 import { SummonerSearchErrorComponent } from './summoner-search-error/summoner-search-error.component';
 
 @Component({
   selector: 'app-summoner-search',
   standalone: true,
-  imports: [CommonModule, FormsModule, SummonerSearchErrorComponent],
+  imports: [CommonModule, FormsModule, SummonerSearchErrorComponent, FormsModule, CommonModule, ],
   templateUrl: './summoner-search.component.html',
   styleUrl: './summoner-search.component.scss',
 })
 export class SummonerSearchComponent {
+
+  @ViewChild('searchError') searchErrorComponent!: SummonerSearchErrorComponent;
   gameName: string = '';
   tagLine: string = '';
   isLoading: boolean = false;
@@ -46,8 +48,11 @@ export class SummonerSearchComponent {
         ),
         catchError((error) => {
           this.error = error;
+          this.searchErrorComponent.showError('... Failed');
+          setTimeout(() => this.errorMessage = '', 3000);
           return of (null);
         }),
+        finalize(() => this.isLoading = false)
       )
       .subscribe({
         next: (result) => {
