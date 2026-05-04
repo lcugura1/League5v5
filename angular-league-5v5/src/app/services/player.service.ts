@@ -11,8 +11,8 @@ import { Player } from '../models/player';
 export class PlayerService {
 
   private apiKey = environment.riotApiKey;
-  private accountBaseUrl = 'https://europe.api.riotgames.com';
-  private summonerBaseUrl = 'https://eun1.api.riotgames.com';
+  private accountBaseUrl = '/riot-europe';
+  private summonerBaseUrl = '/riot-eun1';
 
   constructor(private http: HttpClient) {}
 

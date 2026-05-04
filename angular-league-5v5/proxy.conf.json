@@ -1,0 +1,16 @@
+{
+  "/riot-europe": {
+    "target": "https://europe.api.riotgames.com",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": { "^/riot-europe": "" },
+    "logLevel": "debug"
+  },
+  "/riot-eun1": {
+    "target": "https://eun1.api.riotgames.com",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": { "^/riot-eun1": "" },
+    "logLevel": "debug"
+  }
+}
